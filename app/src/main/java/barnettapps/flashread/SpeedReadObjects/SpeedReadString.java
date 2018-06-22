@@ -28,9 +28,7 @@ public class SpeedReadString extends SpeedReadObject {
                 SpeedReadString splitloop = new SpeedReadString(s);
                 Dataout.add(splitloop);
             }
-
-
-            SpeedReadSection outarray = new SpeedReadSection(); // split into Section
+            SpeedReadSection outarray = new SpeedReadSection(Dataout); // split into Section
             return outarray;
         }
     }

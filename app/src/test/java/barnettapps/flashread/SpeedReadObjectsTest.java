@@ -8,6 +8,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SpeedReadObjectsTest {
 
@@ -25,23 +28,9 @@ public class SpeedReadObjectsTest {
 
         SpeedReadString actualString1 = new SpeedReadString("Test");
         SpeedReadString actualString2 = new SpeedReadString("Test2");
-        SpeedReadString[] actualarray = {actualString1,actualString2};
-        SpeedReadSection actualsection = new SpeedReadSection( actualarray );
 
-        SpeedReadSection testsection = (SpeedReadSection)testString.split(" ");
-        assertThat(testsection,equalTo(actualsection));
-    }
-
-    @Test
-    public void testSpeedReadString_split2(){
-        SpeedReadString testString = new SpeedReadString("This is a new Test.");
-
-        SpeedReadString actualString1 = new SpeedReadString("This");
-        SpeedReadString actualString2 = new SpeedReadString("is");
-        SpeedReadString actualString3 = new SpeedReadString("a");
-        SpeedReadString actualString4 = new SpeedReadString("new");
-        SpeedReadString actualString5 = new SpeedReadString("Test.");
-        SpeedReadString[] actualarray = {actualString1,actualString2,actualString3,actualString4,actualString5};
+        List<SpeedReadObject> actualarray = new ArrayList<>();
+        actualarray.add(actualString1); actualarray.add(actualString2);
         SpeedReadSection actualsection = new SpeedReadSection( actualarray );
 
         SpeedReadSection testsection = (SpeedReadSection)testString.split(" ");
@@ -52,7 +41,8 @@ public class SpeedReadObjectsTest {
     public void testSpeedReadSection_split(){
         SpeedReadString testString1 = new SpeedReadString("This//Test.");
         SpeedReadString testString2 = new SpeedReadString("This2 Test2.");
-        SpeedReadString[] testStringarray = {testString1,testString2};
+        List<SpeedReadObject> testStringarray = new ArrayList<>();
+        testStringarray.add(testString1); testStringarray.add(testString2);
         SpeedReadSection testSection = new SpeedReadSection(testStringarray);
         testSection = testSection.split("//");
 
