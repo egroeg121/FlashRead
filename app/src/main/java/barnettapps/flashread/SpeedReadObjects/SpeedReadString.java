@@ -1,5 +1,8 @@
 package barnettapps.flashread.SpeedReadObjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SpeedReadString extends SpeedReadObject {
 
     protected String Data;
@@ -18,7 +21,16 @@ public class SpeedReadString extends SpeedReadObject {
         if (Data.indexOf(splitter) <0 ){
             return this; // no splitting
         }else{
-            SpeedReadSection outarray = new SpeedReadSection(Data.split(splitter)); // split into Section
+            List<SpeedReadObject> Dataout = new ArrayList<>();
+            String[] strinarray = Data.split(splitter);
+
+            for (String s : strinarray){
+                SpeedReadString splitloop = new SpeedReadString(s);
+                Dataout.add(splitloop);
+            }
+
+
+            SpeedReadSection outarray = new SpeedReadSection(); // split into Section
             return outarray;
         }
     }

@@ -1,10 +1,14 @@
 package barnettapps.flashread.SpeedReadObjects;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SpeedReadSection extends SpeedReadObject{
 
-    protected SpeedReadObject[] Data;
+    protected List<SpeedReadObject> Data;
 
-    public SpeedReadSection(SpeedReadObject[] _data) {
+    public SpeedReadSection(List<SpeedReadObject> _data) {
         Data = _data;
         CharLength =getCharLength();
         ObjectLength = getObjectLength();
@@ -13,6 +17,7 @@ public class SpeedReadSection extends SpeedReadObject{
     }
 
 
+    /*
     public SpeedReadSection(String[] _data) {
         this.Data = new SpeedReadString[_data.length];
         for (int i = 0; i < _data.length; i++) {
@@ -23,18 +28,19 @@ public class SpeedReadSection extends SpeedReadObject{
         Time = getTime();
         Transparent = getTransparent();
     }
+    // TODO Update Shorter
+    */
 
 
     @Override
-    public SpeedReadSection split(String splitter) {
+    public SpeedReadSection split(String _splitter) {
 
+        List<SpeedReadObject> Dataout = new ArrayList<>();
 
-
-        SpeedReadObject[] splitout = new SpeedReadObject[Data.length];
-        for (int i = 0; i < Data.length; i++) {
-           splitout[i] = Data[i].split(splitter); // outputs SpeedReadSection
+        for (int i = 0; i < Data.size(); i++) {
+            Data.set( i, Data.get(i).split(_splitter)) ; // run split at Data(i)
         }
-        Data = splitout;
+
         return this;
     }
 
@@ -78,11 +84,11 @@ public class SpeedReadSection extends SpeedReadObject{
         return sum;
     }
 
-    public SpeedReadObject getDataIndex(int _index){
-        return Data[_index];
+    public SpeedReadObject getData(int _index){
+        return Data.get(_index);
     }
 
-    public SpeedReadObject[] getDataArray(){
+    public List<SpeedReadObject> getDataArray(){
         return Data;
     }
 
