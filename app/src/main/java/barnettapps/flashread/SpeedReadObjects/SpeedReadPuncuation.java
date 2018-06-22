@@ -1,23 +1,31 @@
 package barnettapps.flashread.SpeedReadObjects;
 
-public class SpeedReadPuncuation extends SpeedReadObject{
+public class SpeedReadPuncuation extends SpeedReadString {
 
-
-    public void calcCentre(){
-        Centre = 0;
+    public SpeedReadPuncuation(String data) {
+        super(data);
+        Time = 10;
+        Transparent = true;
     }
 
-    public int getObjectLength(){
-        return 0;
+    @Override
+    public SpeedReadObject split(String splitter) {
+        return this;
     }
 
-    public int getCharLength(){
+
+    public String getData() {
+        return Data;
+    }
+
+    @Override
+    public int getObjectLength() {
         return 1;
     }
 
-    public SpeedReadObject Split(SpeedReadObject tosplit){
-        return tosplit;
+    @Override
+    public int getCharLength() {
+        return 1;
     }
 
 }
-

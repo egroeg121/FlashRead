@@ -2,32 +2,50 @@ package barnettapps.flashread.SpeedReadObjects;
 
 public class SpeedReadString extends SpeedReadObject {
 
-    protected String DisplayData;
+    protected String Data;
 
-    public SpeedReadString(String displayString) {
-        super();
-        DisplayData = displayString;
-        calcTime();
-        calcCentre();
+    public SpeedReadString(String data) {
+        Data = data;
+        Transparent = getTransparent();
+        ObjectLength = getObjectLength();
+        CharLength =getCharLength();
+        Time = getTime();
     }
 
-    public SpeedReadSection split(String splitter){
-        String[] Stringarray = DisplayData.split(splitter);
-        SpeedReadSection outsection = new SpeedReadSection(Stringarray.length);
-        return outsection;
+    @Override
+    public SpeedReadObject split(String splitter) {
+
+        if (Data.indexOf(splitter) <0 ){
+            return this; // no splitting
+        }else{
+            SpeedReadSection outarray = new SpeedReadSection(Data.split(splitter)); // split into Section
+            return outarray;
+        }
     }
 
-    public void calcTime(){
-        Time = DisplayData.length();
-        System.out.format("Time  = %l",Time);
+
+    public String getData() {
+        return Data;
     }
 
-    public void calcCentre(){
-        Centre = DisplayData.length() / 4 ;
-        System.out.format("Centre  = %i",Centre);
+    @Override
+    public int getObjectLength() {
+        return 1;
     }
 
-    public int getCharLength(){
-        return DisplayData.length();
+    @Override
+    public int getCharLength() {
+        return Data.length();
     }
+
+    @Override
+    long getTime() {
+        return CharLength;
+    }
+
+    @Override
+    boolean getTransparent() {
+        return false;
+    }
+
 }

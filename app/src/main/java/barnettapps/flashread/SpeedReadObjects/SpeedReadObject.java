@@ -1,33 +1,30 @@
 package barnettapps.flashread.SpeedReadObjects;
 
-public abstract class SpeedReadObject {
+import android.media.JetPlayer;
+
+public abstract class SpeedReadObject{
     protected long Time;
-    protected int Centre;
+    protected boolean Transparent;
+    protected int ObjectLength;
+    protected int CharLength;
 
     public SpeedReadObject() {
-        calcCentre();
-        calcTime();
-    }
-
-    public void calcTime(){
         Time = 0;
+        Transparent = false;
+        ObjectLength = 0;
+        CharLength =0;
     }
 
-    public void calcCentre(){
-        Centre = 0;
-    }
+    abstract int getObjectLength();
+    abstract int getCharLength();
+    abstract long getTime();
+    abstract boolean getTransparent();
 
-    public int getObjectLength(){
-        return 1;
-    }
+    abstract SpeedReadObject split(String splitter);
 
-    public int getCharLength(){
-        return 1;
+    @Override
+    public boolean equals(Object o) {
+        return true;
     }
-
-    public SpeedReadObject Split(SpeedReadObject tosplit){
-        return tosplit;
-    }
-
 }
 

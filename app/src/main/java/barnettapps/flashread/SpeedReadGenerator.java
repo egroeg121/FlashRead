@@ -6,21 +6,23 @@ public class SpeedReadGenerator {
 
     char Splitarray[] = {' ','.'};
 
+    /*
     public SpeedReadSection sectionGenerator(String input){
 
-        SpeedReadString speedstring = new SpeedReadString(input);
-        SpeedReadSection Output = speedstring.split(".");
+        // Read in String
         return Output;
     }
+    */
 
-
-    // Recursive function to spl it array
-
+    /*
     private SpeedReadSection flatten(SpeedReadSection input){
 
-        SpeedReadSection flatSection = input;
+        // get total object length
+
+        // create single section of that length
 
         return flatSection;
     }
+    */
 
 }

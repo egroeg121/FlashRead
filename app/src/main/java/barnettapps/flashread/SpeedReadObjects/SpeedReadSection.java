@@ -2,48 +2,88 @@ package barnettapps.flashread.SpeedReadObjects;
 
 public class SpeedReadSection extends SpeedReadObject{
 
-    SpeedReadObject[] Data;
+    protected SpeedReadObject[] Data;
 
-    public SpeedReadSection(int length){
-        Data = new SpeedReadObject[length];
+    public SpeedReadSection(SpeedReadObject[] _data) {
+        Data = _data;
+        CharLength =getCharLength();
+        ObjectLength = getObjectLength();
+        Time = getTime();
+        Transparent = getTransparent();
     }
 
-    public SpeedReadSection(String[] stringarray){
 
-        Data = new SpeedReadObject[stringarray.length];
-        for (int i = 0; i <= stringarray.length; i++){
-            Data[i] = new SpeedReadString( stringarray[i] );
+    public SpeedReadSection(String[] _data) {
+        this.Data = new SpeedReadString[_data.length];
+        for (int i = 0; i < _data.length; i++) {
+            this.Data[i] = new SpeedReadString(_data[i]);
+        }
+        CharLength =getCharLength();
+        ObjectLength = getObjectLength();
+        Time = getTime();
+        Transparent = getTransparent();
+    }
+
+
+    @Override
+    public SpeedReadSection split(String splitter) {
+
+
+
+        SpeedReadObject[] splitout = new SpeedReadObject[Data.length];
+        for (int i = 0; i < Data.length; i++) {
+           splitout[i] = Data[i].split(splitter); // outputs SpeedReadSection
+        }
+        Data = splitout;
+        return this;
+    }
+
+    @Override
+    public long getTime(){
+        int sum = 0;
+        for (SpeedReadObject i : Data){
+            sum += i.getTime();
         }
 
+        return sum;
     }
 
-    public int getObjectLength(){
-
-        int objectlength = 0;
-        for (SpeedReadObject obj : Data){
-            objectlength += obj.getObjectLength();
+    @Override
+    boolean getTransparent() {
+        int sum = 0;
+        for (SpeedReadObject i : Data){
+            sum = i.getTransparent() ? 1 : 0;
         }
-        return objectlength;
+        if (sum!=0){return false;}
+        return true;
     }
 
-    public int getCharLenth(){
-        int charlength = 0;
-        for (SpeedReadObject obj : Data){
-            charlength += obj.getCharLength();
+    @Override
+    public int getObjectLength() {
+        int sum = 0;
+        for (SpeedReadObject i : Data){
+            sum += i.getObjectLength();
         }
-        return charlength;
+
+        return sum;
     }
 
+    @Override
+    public int getCharLength() {
+        int sum = 0;
+        for (SpeedReadObject i : Data){
+            sum += i.getCharLength();
+        }
 
-
-    public SpeedReadObject Split(SpeedReadObject tosplit){
-        return tosplit;
+        return sum;
     }
 
+    public SpeedReadObject getDataIndex(int _index){
+        return Data[_index];
+    }
 
-    public SpeedReadObject getObject(int index){
-
-        return Data[index];
+    public SpeedReadObject[] getDataArray(){
+        return Data;
     }
 
 }
