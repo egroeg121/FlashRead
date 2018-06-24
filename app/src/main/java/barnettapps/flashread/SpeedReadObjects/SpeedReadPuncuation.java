@@ -1,31 +1,19 @@
 package barnettapps.flashread.SpeedReadObjects;
 
-public class SpeedReadPuncuation extends SpeedReadString {
+public abstract class SpeedReadPuncuation extends SpeedReadObject<String>{
 
-    public SpeedReadPuncuation(String data) {
-        super(data);
-        Time = 10;
-        Transparent = true;
+    protected boolean DoesSplit; // Should it be added after splitting (period is added to section)
+
+    public SpeedReadPuncuation(){
+        CharLength = 0;
+        Time = 0;
+        Transparent = false;
+        ObjectLength = 0;
+        DoesSplit = false;
     }
 
-    @Override
-    public SpeedReadObject split(String splitter) {
-        return this;
-    }
-
-
-    public String getData() {
-        return Data;
-    }
-
-    @Override
-    public int getObjectLength() {
-        return 1;
-    }
-
-    @Override
-    public int getCharLength() {
-        return 1;
+    boolean getDoesSplit(){
+        return DoesSplit;
     }
 
 }
