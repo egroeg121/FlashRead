@@ -2,60 +2,56 @@ package barnettapps.flashread.SpeedReadObjects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
-public class SpeedReadString extends SpeedReadObject {
+import barnettapps.flashread.SpeedReadObjects.Puncuation.SpeedReadStop;
 
-    protected String Data;
+public class SpeedReadString extends SpeedReadObject<String> {
 
     public SpeedReadString(String data) {
         Data = data;
-        Transparent = getTransparent();
-        ObjectLength = getObjectLength();
-        CharLength =getCharLength();
-        Time = getTime();
+        CharLength = Data.length();
+        Time = CharLength;
+        Transparent = false;
+        ObjectLength = 1;
     }
 
-    @Override
-    public SpeedReadObject split(String splitter) {
+    public SpeedReadObject<? extends Object> split(SpeedReadPuncuation splitter) {
 
-        if (Data.indexOf(splitter) <0 ){
-            return this; // no splitting
-        }else{
+        // no splitting
+        if (Data.indexOf( splitter.getData() ) <0 ){
+            return this; }
+
+        // Use Tokenizer, avoid regex special characters
+        if (splitter.getData().length() < 2) {
+
+            ArrayList tokenizedOutArray= new ArrayList<SpeedReadObject>();
+
+            StringTokenizer testTokenizer = new StringTokenizer(Data,splitter.getData());
+            while (testTokenizer.hasMoreTokens()) {
+
+                tokenizedOutArray.add( new SpeedReadString(testTokenizer.nextToken()) );
+                if (splitter.DoesSplit){tokenizedOutArray.add(splitter);};
+            }
+
+            SpeedReadSection outSec = new SpeedReadSection(tokenizedOutArray);
+
+
+            return outSec;
+
+        }else{ // Use Splitter, multi character splitters
             List<SpeedReadObject> Dataout = new ArrayList<>();
-            String[] strinarray = Data.split(splitter);
+            String[] strinarray = Data.split(splitter.getData());
 
             for (String s : strinarray){
                 SpeedReadString splitloop = new SpeedReadString(s);
                 Dataout.add(splitloop);
+                if (splitter.DoesSplit){Dataout.add(splitter);}
             }
-            SpeedReadSection outarray = new SpeedReadSection(Dataout); // split into Section
-            return outarray;
+
+            return new SpeedReadSection(Dataout);
         }
     }
 
-
-    public String getData() {
-        return Data;
-    }
-
-    @Override
-    public int getObjectLength() {
-        return 1;
-    }
-
-    @Override
-    public int getCharLength() {
-        return Data.length();
-    }
-
-    @Override
-    long getTime() {
-        return CharLength;
-    }
-
-    @Override
-    boolean getTransparent() {
-        return false;
-    }
 
 }
