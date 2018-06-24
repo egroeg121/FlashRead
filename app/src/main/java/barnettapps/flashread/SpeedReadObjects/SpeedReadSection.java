@@ -2,70 +2,70 @@ package barnettapps.flashread.SpeedReadObjects;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class SpeedReadSection extends SpeedReadObject{
+public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
 
-    protected List<SpeedReadObject> Data;
-
-    public SpeedReadSection(List<SpeedReadObject> _data) {
-        Data = _data;
-        CharLength =getCharLength();
-        ObjectLength = getObjectLength();
-        Time = getTime();
-        Transparent = getTransparent();
+    public SpeedReadSection(List<SpeedReadObject> _input) {
+        Data = new ArrayList<SpeedReadObject>();
+        Data = _input;
+        reCalc();
     }
 
-
-    /*
-    public SpeedReadSection(String[] _data) {
-        this.Data = new SpeedReadString[_data.length];
-        for (int i = 0; i < _data.length; i++) {
-            this.Data[i] = new SpeedReadString(_data[i]);
-        }
-        CharLength =getCharLength();
-        ObjectLength = getObjectLength();
-        Time = getTime();
-        Transparent = getTransparent();
+    public SpeedReadSection(SpeedReadObject[] _input){
+        Data = new ArrayList<SpeedReadObject>( Arrays.asList(_input) );
+        reCalc();
     }
-    // TODO Update Shorter
-    */
 
+    public SpeedReadSection(SpeedReadObject _input) {
+        Data = new ArrayList<SpeedReadObject>();
+        Data.add(_input);
+        reCalc();
+    }
 
     @Override
-    public SpeedReadSection split(String _splitter) {
-
-        List<SpeedReadObject> Dataout = new ArrayList<>();
+    public SpeedReadSection split(SpeedReadPuncuation _splitter) {
 
         for (int i = 0; i < Data.size(); i++) {
             Data.set( i, Data.get(i).split(_splitter)) ; // run split at Data(i)
         }
-
+        reCalc();
         return this;
     }
 
-    @Override
-    public long getTime(){
+    public SpeedReadSection flatten(){
+
+
+
+        return null;
+    }
+
+    void reCalc(){
+        CharLength =calcCharLength();
+        ObjectLength = calcObjectLength();
+        Time = calcTime();
+        Transparent = calcTransparent();
+    }
+
+    public long calcTime(){
         int sum = 0;
         for (SpeedReadObject i : Data){
             sum += i.getTime();
         }
-
         return sum;
     }
 
-    @Override
-    boolean getTransparent() {
+    boolean calcTransparent() {
         int sum = 0;
         for (SpeedReadObject i : Data){
             sum = i.getTransparent() ? 1 : 0;
         }
         if (sum!=0){return false;}
-        return true;
+        else{return true;}
     }
 
-    @Override
-    public int getObjectLength() {
+    public int calcObjectLength() {
         int sum = 0;
         for (SpeedReadObject i : Data){
             sum += i.getObjectLength();
@@ -74,8 +74,7 @@ public class SpeedReadSection extends SpeedReadObject{
         return sum;
     }
 
-    @Override
-    public int getCharLength() {
+    public int calcCharLength() {
         int sum = 0;
         for (SpeedReadObject i : Data){
             sum += i.getCharLength();
@@ -84,12 +83,13 @@ public class SpeedReadSection extends SpeedReadObject{
         return sum;
     }
 
-    public SpeedReadObject getData(int _index){
-        return Data.get(_index);
+    public SpeedReadSection add(SpeedReadObject _toAdd){
+        Data.add(_toAdd);
+        return this;
     }
 
-    public List<SpeedReadObject> getDataArray(){
-        return Data;
+    public SpeedReadObject getDataIndex(int _index){
+        return Data.get(_index);
     }
 
 }
