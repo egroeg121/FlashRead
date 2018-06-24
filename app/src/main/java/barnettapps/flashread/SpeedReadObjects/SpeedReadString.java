@@ -17,10 +17,18 @@ public class SpeedReadString extends SpeedReadObject<String> {
     }
 
     public SpeedReadObject<? extends Object> split(SpeedReadPuncuation splitter) {
+        SpeedReadSection outSec;
+
 
         // no splitting
         if (Data.indexOf( splitter.getData() ) <0 ){
-            return this; }
+            return this;
+        }
+
+        // Get number of times to split
+        int splitterchar = ( Data.length() - Data.replace(splitter.getData(), "").length() );
+        int splitterlength = splitter.getData().length();
+        int splittercount = splitterchar/splitterlength;
 
         // Use Tokenizer, avoid regex special characters
         if (splitter.getData().length() < 2) {
@@ -34,10 +42,7 @@ public class SpeedReadString extends SpeedReadObject<String> {
                 if (splitter.DoesSplit){tokenizedOutArray.add(splitter);};
             }
 
-            SpeedReadSection outSec = new SpeedReadSection(tokenizedOutArray);
-
-
-            return outSec;
+            outSec = new SpeedReadSection(tokenizedOutArray);
 
         }else{ // Use Splitter, multi character splitters
             List<SpeedReadObject> Dataout = new ArrayList<>();
@@ -49,8 +54,15 @@ public class SpeedReadString extends SpeedReadObject<String> {
                 if (splitter.DoesSplit){Dataout.add(splitter);}
             }
 
-            return new SpeedReadSection(Dataout);
+            outSec = new SpeedReadSection(Dataout);
         }
+
+        // Remove if extra symbol added to end
+        if (outSec.getData().size()/2-1 == splittercount) {
+            outSec.removeEnd();
+        }
+
+        return outSec;
     }
 
 

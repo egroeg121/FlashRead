@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
 
 public class SpeedReadObjectsTest {
 
-    String testString1 = "This Test <PARA-BREAK> Second.Test";
+    String testString1 = "This Test <PARA-BREAK> Second.Test<PARA-BREAK>";
     String testString2 = "This2//Test2.Another Test";
 
 
@@ -77,6 +77,20 @@ public class SpeedReadObjectsTest {
 
     @Test
     public void testSpeedReadSection_split(){
+
+        // TODO Finish Test
+
+        SpeedReadSection outputSec= testSRSection2.split(testSRStop1);
+        //assertEquals(outputSec.split(testSRStop1),actualSection);
+
     }
+
+    @Test
+    public void testSpeedReadSection_CharLength(){
+
+        assertEquals("Char length is not the same", testSRSection2.split(testSRStop1).getCharLength(),testSRSection2.getCharLength());
+
+    }
+
 
 }

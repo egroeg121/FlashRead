@@ -27,11 +27,11 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
     @Override
     public SpeedReadSection split(SpeedReadPuncuation _splitter) {
 
+        List<SpeedReadObject> NewData = new ArrayList();
         for (int i = 0; i < Data.size(); i++) {
-            Data.set( i, Data.get(i).split(_splitter)) ; // run split at Data(i)
+            NewData.add(Data.get(i).split(_splitter)) ; // run split at Data(i)
         }
-        reCalc();
-        return this;
+        return new SpeedReadSection(NewData);
     }
 
     public SpeedReadSection flatten(){
@@ -85,7 +85,18 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
 
     public SpeedReadSection add(SpeedReadObject _toAdd){
         Data.add(_toAdd);
+        reCalc();
         return this;
+    }
+
+    public SpeedReadSection remove(int _index){
+        Data.remove(_index);
+        reCalc();
+        return this;
+    }
+
+    public SpeedReadSection removeEnd(){
+        return remove(Data.size()-1);
     }
 
     public SpeedReadObject getDataIndex(int _index){
