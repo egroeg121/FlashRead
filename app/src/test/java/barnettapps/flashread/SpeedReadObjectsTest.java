@@ -3,52 +3,80 @@ package barnettapps.flashread;
 
 
 import barnettapps.flashread.SpeedReadObjects.*;
+import barnettapps.flashread.SpeedReadObjects.Puncuation.SpeedReadParagraph;
+import barnettapps.flashread.SpeedReadObjects.Puncuation.SpeedReadStop;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class SpeedReadObjectsTest {
 
+    String testString1 = "This Test <PARA-BREAK> Second.Test";
+    String testString2 = "This2//Test2.Another Test";
 
-    @Test
-    public void testSpeedReadString_getData(){
-        SpeedReadString testString = new SpeedReadString("Test");
 
-        assertEquals("Can't get data of String",testString.getData(),"Test");
+    SpeedReadString testSRString1;
+    SpeedReadString testSRString2;
+    SpeedReadStop testSRStop1;
+    SpeedReadParagraph testSRPara1;
+    SpeedReadSection testSRSection1;
+    SpeedReadSection testSRSection2;
+
+    @Before
+    public  void Test_Setup(){
+        testSRString1 = new SpeedReadString(testString1);
+        testSRString2 = new SpeedReadString(testString2);
+        testSRSection1 = new SpeedReadSection(testSRString1);
+        testSRStop1 = new SpeedReadStop();
+        testSRPara1 = new SpeedReadParagraph();
+        SpeedReadObject[] testObjectArray = {testSRString1,testSRString2};
+        testSRSection2 = new SpeedReadSection( testObjectArray);
     }
 
     @Test
-    public void testSpeedReadString_split(){
-        SpeedReadString testString = new SpeedReadString("Test Test2");
+    public void testSpeedReadString_getData(){
+        assertEquals("Somewhere SRString.getData() Error",testSRString1.getData(),testString1);
+    }
 
-        SpeedReadString actualString1 = new SpeedReadString("Test");
-        SpeedReadString actualString2 = new SpeedReadString("Test2");
+    @Test
+    public void testSpeedString_Length(){
+        assertEquals("Somewhere SRString.getLength() Error", testSRString1.getCharLength(),testString1.length());
+    }
 
-        List<SpeedReadObject> actualarray = new ArrayList<>();
-        actualarray.add(actualString1); actualarray.add(actualString2);
-        SpeedReadSection actualsection = new SpeedReadSection( actualarray );
+    @Test
+    public void testSpeedStop_getData(){
+        String test = testSRStop1.getData();
+        assertEquals("Somewhere SRStop.getData() Error",test  ,".");
+    }
 
-        SpeedReadSection testsection = (SpeedReadSection)testString.split(" ");
-        assertThat(testsection,equalTo(actualsection));
+    @Test
+    public void testSpeedReadString_split_specialcharacter(){
+
+        // TODO FInish Test
+
+        SpeedReadSection outputSec= (SpeedReadSection) testSRString1.split(testSRStop1);
+        //assertEquals(outputSec.split(testSRStop1),actualSection);
+
+    }
+
+    @Test
+    public void testSpeedReadString_split_multicharacter(){
+
+        // TODO Finish Test
+
+        SpeedReadSection outputSec= (SpeedReadSection) testSRString1.split(testSRPara1);
+        //assertEquals(outputSec.split(testSRStop1),actualSection);
+
     }
 
     @Test
     public void testSpeedReadSection_split(){
-        SpeedReadString testString1 = new SpeedReadString("This//Test.");
-        SpeedReadString testString2 = new SpeedReadString("This2 Test2.");
-        List<SpeedReadObject> testStringarray = new ArrayList<>();
-        testStringarray.add(testString1); testStringarray.add(testString2);
-        SpeedReadSection testSection = new SpeedReadSection(testStringarray);
-        testSection = testSection.split("//");
-
-        SpeedReadSection actualsection = new SpeedReadSection( testStringarray );
-        assertThat(testSection,equalTo(actualsection));
     }
-
 
 }
