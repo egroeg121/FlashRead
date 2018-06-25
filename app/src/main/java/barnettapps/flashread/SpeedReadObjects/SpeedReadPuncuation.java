@@ -8,7 +8,7 @@ public abstract class SpeedReadPuncuation extends SpeedReadObject<String>{
         CharLength = 0;
         Time = 0;
         Transparent = false;
-        ObjectLength = 0;
+        ObjectLength = 1;
         DoesSplit = false;
     }
 

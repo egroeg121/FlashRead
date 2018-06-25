@@ -9,7 +9,7 @@ public class SpeedReadExclamation extends SpeedReadStop {
         CharLength = 0;
         Time = 0;
         Transparent = false;
-        ObjectLength = 0;
+        ObjectLength = 1;
         DoesSplit = true;
 
     }

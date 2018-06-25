@@ -9,7 +9,7 @@ public class SpeedReadComma extends SpeedReadPuncuation {
         CharLength = 1;
         Time = 7;
         Transparent = false;
-        ObjectLength = 0;
+        ObjectLength = 1;
         DoesSplit = true;
 
     }

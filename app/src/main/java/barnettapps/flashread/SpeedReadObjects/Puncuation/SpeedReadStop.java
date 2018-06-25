@@ -9,7 +9,7 @@ public class SpeedReadStop extends SpeedReadPuncuation {
         CharLength = 1;
         Time = 10;
         Transparent = false;
-        ObjectLength = 0;
+        ObjectLength = 1;
         DoesSplit = true;
 
     }
