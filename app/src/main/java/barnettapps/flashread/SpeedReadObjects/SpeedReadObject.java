@@ -1,5 +1,8 @@
 package barnettapps.flashread.SpeedReadObjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class SpeedReadObject<T>{
     protected T Data;
     protected boolean Transparent; // Whether the symbol gets shown on screen
@@ -37,6 +40,12 @@ public abstract class SpeedReadObject<T>{
     public SpeedReadObject split(SpeedReadPuncuation _splitter){
         return this;
     };
+
+    public List<SpeedReadObject> flatten(){
+        List outList = new ArrayList();
+        outList.add(this);
+        return outList;
+    }
 
     @Override
     public boolean equals(Object o) {

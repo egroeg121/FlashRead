@@ -1,6 +1,7 @@
 package barnettapps.flashread.SpeedReadObjects;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,6 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
 
     @Override
     public SpeedReadSection split(SpeedReadPuncuation _splitter) {
-
         List<SpeedReadObject> NewData = new ArrayList();
         for (int i = 0; i < Data.size(); i++) {
             NewData.add(Data.get(i).split(_splitter)) ; // run split at Data(i)
@@ -34,11 +34,12 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
         return new SpeedReadSection(NewData);
     }
 
-    public SpeedReadSection flatten(){
-
-
-
-        return null;
+    public List<SpeedReadObject> flatten() {
+        List outList = new ArrayList();
+        for (SpeedReadObject o : Data) {
+            outList.addAll(o.flatten());
+        }
+        return outList;
     }
 
     void reCalc(){
