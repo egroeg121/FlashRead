@@ -1,16 +1,21 @@
 package barnettapps.flashread.SpeedReadObjects.Puncuation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PuncuationList {
 
-    Class[] getPunctiationList(){
-        Class[] classes = new Class[] {
-                SpeedReadStop.class,
-                SpeedReadComma.class,
-                SpeedReadSpace.class,
-                SpeedReadExclamation.class
-        };
-        return classes;
+    public List getPunctiationList(){
+        List PuncList = new ArrayList();
+        PuncList.add( new SpeedReadStop() );
+        PuncList.add( new SpeedReadExclamation() );
+        PuncList.add( new SpeedReadSpace() );
+        PuncList.add( new SpeedReadStop() );
+        PuncList.add( new SpeedReadComma() );
+        return PuncList;
     }
+
+
 
 
 

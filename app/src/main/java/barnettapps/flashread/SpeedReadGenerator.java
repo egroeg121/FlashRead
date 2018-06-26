@@ -1,34 +1,35 @@
 package barnettapps.flashread;
 
+import java.util.List;
+
 import barnettapps.flashread.SpeedReadObjects.*;
+import barnettapps.flashread.SpeedReadObjects.Puncuation.PuncuationList;
 
 public class SpeedReadGenerator {
 
-    char Splitarray[] = {' ','.'};
-
-
-    public SpeedReadSection SpeedReadGenerator(String _input){
+    public SpeedReadSection generate(String _input){
 
         // Read in String
 
         SpeedReadString InputString = new SpeedReadString(_input);
-        SpeedReadSection Output = new SpeedReadSection(InputString);
+        SpeedReadSection dividedSec = new SpeedReadSection(InputString);
 
+        // Get Puncuation List
+        PuncuationList puncuationList = new PuncuationList();
 
-
-        return Output;
+        List<SpeedReadPuncuation> puncList = puncuationList.getPunctiationList();
+        for (SpeedReadPuncuation po : puncList){
+            dividedSec = dividedSec.split( po );
+        }
+        SpeedReadSection outSec = new SpeedReadSection( dividedSec );
+        return outSec;
     }
 
 
-    /*
-    private SpeedReadSection flatten(SpeedReadSection input){
 
-        // get total object length
-
-        // create single section of that length
-
-        return flatSection;
+    public SpeedReadSection flatten(SpeedReadSection input){
+        return new SpeedReadSection( input.flatten() );
     }
-    */
+
 
 }
