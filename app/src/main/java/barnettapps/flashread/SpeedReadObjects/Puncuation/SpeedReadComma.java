@@ -1,5 +1,6 @@
 package barnettapps.flashread.SpeedReadObjects.Puncuation;
 
+
 import barnettapps.flashread.SpeedReadObjects.*;
 
 public class SpeedReadComma extends SpeedReadPuncuation {
@@ -13,5 +14,6 @@ public class SpeedReadComma extends SpeedReadPuncuation {
         DoesSplit = true;
 
     }
+
 }
 

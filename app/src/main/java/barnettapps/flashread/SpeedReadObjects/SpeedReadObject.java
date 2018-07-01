@@ -47,10 +47,16 @@ public abstract class SpeedReadObject<T>{
         return outList;
     }
 
+    public String getClassString(){
+        // getName returns full package name 'barnett.apps...SpeedReadObject'
+        // getSimpleName returns just Object name 'SpeedReadObject'
+        return getClass().getName();
+    }
+
     @Override
     public boolean equals(Object o) {
         // TODO Improve equals
         return true;
     }
-}
 
+}

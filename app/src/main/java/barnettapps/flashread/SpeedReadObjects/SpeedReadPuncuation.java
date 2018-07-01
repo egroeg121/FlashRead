@@ -1,5 +1,8 @@
 package barnettapps.flashread.SpeedReadObjects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public abstract class SpeedReadPuncuation extends SpeedReadObject<String>{
 
     protected boolean DoesSplit; // Should it be added after splitting (period is added to section)
@@ -15,5 +18,8 @@ public abstract class SpeedReadPuncuation extends SpeedReadObject<String>{
     boolean getDoesSplit(){
         return DoesSplit;
     }
+
+
+
 
 }

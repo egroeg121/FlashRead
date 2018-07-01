@@ -1,12 +1,15 @@
 package barnettapps.flashread.SpeedReadObjects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import barnettapps.flashread.SpeedReadObjects.Puncuation.SpeedReadStop;
 
-public class SpeedReadString extends SpeedReadObject<String> {
+public class SpeedReadString extends SpeedReadObject<String>{
 
     public SpeedReadString(String data) {
         Data = data;
@@ -64,6 +67,5 @@ public class SpeedReadString extends SpeedReadObject<String> {
 
         return outSec;
     }
-
 
 }

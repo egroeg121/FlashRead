@@ -1,5 +1,6 @@
 package barnettapps.flashread.SpeedReadObjects.Puncuation;
 
+
 import barnettapps.flashread.SpeedReadObjects.*;
 
 public class SpeedReadStop extends SpeedReadPuncuation {
