@@ -55,16 +55,24 @@ public class SpeedReadObjectGSON{
             String type = jsonObject.get("type").getAsString();
             JsonElement element = jsonObject.get("properties");
 
+            // get package name and remove last this class name
+            String[] s = this.getClass().getName().split("\\.");
+            StringBuilder sb= new StringBuilder();
+            for (int i=0;i<s.length-1;i++){
+                sb=sb.append(s[i]).append(".");
+            }
+
+            // TODO Clean this up
             try {
-                // get package name and remove last this class name
-                String[] s = this.getClass().getName().split("\\.");
-                StringBuilder sb= new StringBuilder();
-                for (int i=0;i<s.length-1;i++){
-                    sb=sb.append(s[i]).append(".");
-                }
                 return context.deserialize(element, Class.forName(sb.toString() + type));
             } catch (ClassNotFoundException cnfe) {
-                throw new JsonParseException("Unknown element type: " + type, cnfe);
+                try {
+                    return context.deserialize(element,Class.forName(sb.toString() + "Puncuation." + type));
+                } catch (ClassNotFoundException e) {
+                    Log.w("GSON Objecct", "UNknown Element Type when trying to find class type");
+                    throw new JsonParseException("Unknown element type: " + type, cnfe);
+                }
+
             }
         }
     }

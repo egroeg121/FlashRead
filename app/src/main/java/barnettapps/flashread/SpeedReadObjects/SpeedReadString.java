@@ -17,6 +17,7 @@ public class SpeedReadString extends SpeedReadObject<String>{
         Time = CharLength;
         Transparent = false;
         ObjectLength = 1;
+        newDisplay = true;
     }
 
     public SpeedReadObject<? extends Object> split(SpeedReadPuncuation splitter) {
@@ -42,7 +43,7 @@ public class SpeedReadString extends SpeedReadObject<String>{
             while (testTokenizer.hasMoreTokens()) {
 
                 tokenizedOutArray.add( new SpeedReadString(testTokenizer.nextToken()) );
-                if (splitter.DoesSplit){tokenizedOutArray.add(splitter);};
+                tokenizedOutArray.add(splitter);
             }
 
             outSec = new SpeedReadSection(tokenizedOutArray);
@@ -54,7 +55,7 @@ public class SpeedReadString extends SpeedReadObject<String>{
             for (String s : strinarray){
                 SpeedReadString splitloop = new SpeedReadString(s);
                 Dataout.add(splitloop);
-                if (splitter.DoesSplit){Dataout.add(splitter);}
+                Dataout.add(splitter);
             }
 
             outSec = new SpeedReadSection(Dataout);
@@ -66,6 +67,22 @@ public class SpeedReadString extends SpeedReadObject<String>{
         }
 
         return outSec;
+    }
+
+    @Override
+    public SpeedReadObject merge(SpeedReadObject _toAdd) {
+        Data = this.Data + _toAdd.getData().toString();
+        reCalcFromData();
+        return this;
+    }
+
+    public SpeedReadObject merge(SpeedReadSection _toAdd) {
+        return _toAdd.add(this);
+    }
+
+    public void reCalcFromData(){
+        CharLength = Data.length();
+        Time = CharLength;
     }
 
 }

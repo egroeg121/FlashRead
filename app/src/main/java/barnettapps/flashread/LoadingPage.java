@@ -17,8 +17,6 @@ public class LoadingPage extends Activity {
 
     private Button startButton;
 
-    private static final String Gson = "test_Section";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +31,16 @@ public class LoadingPage extends Activity {
     {
         Intent intent = new Intent(this, SpeedReadPage.class);
 
-        String testString = "This is a test Speed Read String, lets see how it handles it.";
+        String testString = "However,This. is a test Speed Read String, lets see how it handles it.";
         SpeedReadString testSRString= new SpeedReadString( testString );
         SpeedReadString testSRString2= new SpeedReadString( "Second Test" );
 
         SpeedReadSection testSRSection = new SpeedReadSection( testSRString );
         testSRSection.add(testSRString2);
 
-        SpeedReadObject toSend = testSRString;
+        SpeedReadGenerator speedReadGenerator = new SpeedReadGenerator();
+
+        SpeedReadObject toSend = speedReadGenerator.flatten( speedReadGenerator.generate( testString ) );
 
         String testJSON = new SpeedReadObjectGSON().toGson(toSend);
         String typeJSON = toSend.getClassString();

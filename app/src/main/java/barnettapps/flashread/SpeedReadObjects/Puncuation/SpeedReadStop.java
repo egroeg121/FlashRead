@@ -11,7 +11,6 @@ public class SpeedReadStop extends SpeedReadPuncuation {
         Time = 10;
         Transparent = false;
         ObjectLength = 1;
-        DoesSplit = true;
 
     }
 }

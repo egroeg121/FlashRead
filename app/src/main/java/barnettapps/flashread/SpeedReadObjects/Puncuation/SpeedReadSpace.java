@@ -10,7 +10,5 @@ public class SpeedReadSpace extends SpeedReadPuncuation {
         Time = 0;
         Transparent = true;
         ObjectLength = 0;
-        DoesSplit = true;
-
     }
 }

@@ -9,17 +9,21 @@ public abstract class SpeedReadObject<T>{
     protected int ObjectLength; // For array lengths
     protected int CharLength; // For centreing
     protected long Time; // How long to display on screen
+    protected boolean newDisplay; //
 
     public SpeedReadObject() {
         Transparent = false;
         ObjectLength = 1;
         CharLength =0;
         Time = 0;
+        newDisplay = false;
     }
 
     public T getData(){
         return Data;
     }
+
+    public SpeedReadObject getDataIndex(int _index) { return this;}
 
     public int getObjectLength() {
         return ObjectLength;
@@ -29,11 +33,11 @@ public abstract class SpeedReadObject<T>{
         return CharLength;
     }
 
-    long getTime() {
+    public long getTime() {
         return Time;
     }
 
-    boolean getTransparent() {
+    public boolean getTransparent() {
         return Transparent;
     }
 
@@ -52,6 +56,12 @@ public abstract class SpeedReadObject<T>{
         // getSimpleName returns just Object name 'SpeedReadObject'
         return getClass().getName();
     }
+
+    public boolean getNewDisplay(){
+        return this.newDisplay;
+    };
+
+    public abstract SpeedReadObject merge(SpeedReadObject _toAdd);
 
     @Override
     public boolean equals(Object o) {

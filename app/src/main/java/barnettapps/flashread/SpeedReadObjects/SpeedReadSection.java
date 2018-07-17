@@ -82,9 +82,28 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
         return sum;
     }
 
+    public boolean getNewDisplay(){
+        boolean out = false;
+        for (SpeedReadObject i:Data){
+            out = i.getNewDisplay() || out;
+        }
+        return out;
+    }
+
     public SpeedReadSection add(SpeedReadObject _toAdd){
         Data.add(_toAdd);
         reCalc();
+        return this;
+    }
+
+    @Override
+    public SpeedReadObject merge(SpeedReadObject _toAdd) {
+        this.add(_toAdd);
+        return null;
+    }
+
+    public SpeedReadObject merge(SpeedReadSection _toAdd){
+        this.Data.addAll(_toAdd.getData());
         return this;
     }
 
@@ -101,5 +120,7 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
     public SpeedReadObject getDataIndex(int _index){
         return Data.get(_index);
     }
+
+
 
 }

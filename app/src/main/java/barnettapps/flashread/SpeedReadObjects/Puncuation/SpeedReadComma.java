@@ -11,8 +11,6 @@ public class SpeedReadComma extends SpeedReadPuncuation {
         Time = 7;
         Transparent = false;
         ObjectLength = 1;
-        DoesSplit = true;
-
     }
 
 }

@@ -10,7 +10,5 @@ public class SpeedReadParagraph extends SpeedReadPuncuation {
         Time = 5;
         Transparent = false;
         ObjectLength = 1;
-        DoesSplit = true;
-
     }
 }
