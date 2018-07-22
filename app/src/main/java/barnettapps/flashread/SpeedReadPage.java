@@ -12,13 +12,15 @@ import com.google.gson.Gson;
 import barnettapps.flashread.SpeedReadObjects.*;
 
 public class SpeedReadPage extends Activity {
+    private static final String LOG_TAG = "SpeedReadPage";
+    private static final double DELAY_TIME = 20;
 
-    private long mInterval = 5000;
     private Handler mHandler;
-    private int index; // index of latest item to be displayed
+    private int index; // index of latest item to be displayed, global variable
 
     private TextView mainText;
     private TextView intervalText;
+    long startTime;
 
     private SpeedReadObject readSection;
     private SpeedReadObject displayObject;
@@ -34,90 +36,65 @@ public class SpeedReadPage extends Activity {
         // Set up Looping Items
         mHandler = new Handler();
         index =0;
-        readSection = loadReadSectionFromIntent();
+        Bundle IntentBundle = getIntent().getExtras();
+        readSection = loadReadSectionFromBundle( IntentBundle );
+        displayObject = readSection.getDataIndex(index);
 
-        // initialise first Handler
-        startRepeatingTask();
-
-        String out;
-        if (readSection.getClass() == SpeedReadSection.class){
-            SpeedReadSection testSection = (SpeedReadSection) readSection;
-            out = (String) testSection.getDataIndex(index).getData();
-        }else{
-            out = (String) readSection.getDataIndex(index).getData();
-        }
-
-        mainText.setText(out);
+        startTime = System.currentTimeMillis();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i("SpeedReadPage","OnDestory()");
-        stopRepeatingTask();
-    }
 
     void startRepeatingTask() {
-        Log.i("SpeedReadPage","Started repeating task");
-        mStatusChecker.run();
+        Log.i(LOG_TAG,"Wait Start");
+        mainText.setText("Ready?");
+        mHandler.postDelayed(reapeaterRunnable, 1000 );
+        Log.i(LOG_TAG,"Started repeating task");
     }
 
     void stopRepeatingTask() {
-        mHandler.removeCallbacks(mStatusChecker);
-        Log.i("SpeedReadPage","stopRepeatingTask");
+        mHandler.removeCallbacks(reapeaterRunnable);
+        Log.i(LOG_TAG,"stopRepeatingTask");
     }
 
-    Runnable mStatusChecker = new Runnable() {
+    Runnable reapeaterRunnable = new Runnable() {
         @Override
         public void run() {
-
-
-            toDisplay = nextItem();
             try { // Try to run
-                
-            } finally { // will defintely run even with try exception
+                displayObjectData(displayObject);
+            } finally {
 
+                if (index<readSection.size()-1){
+                    long mHandlerTime = Math.round(displayObject.getTime() * DELAY_TIME);
+                    mHandler.postDelayed(reapeaterRunnable, mHandlerTime);
+                    displayObject = readSection.getDataIndex(++index);
+                    Log.i(LOG_TAG,"Set new Handler in " + String.valueOf(displayObject.getTime() * DELAY_TIME));
+                }else{
+                    stopRepeatingTask();
+                    Log.i(LOG_TAG,"Finish Speed Read" );
+                    intervalText.setText("Section Finished in " + String.valueOf( (System.currentTimeMillis() - startTime)/1000 + " seconds!" ));
+                }
 
-                // set up new handler after delay of mInterval
-                mHandler.postDelayed(mStatusChecker, mInterval);
-                Log.i("SpeedReadPage","Set new Handler in " + String.valueOf(mInterval));
-                mInterval = 0;
             }
         }
     };
 
 
-
-    // updates index, time and outputs string to display
-    private String nextItem(){
-        String displaystring = "";
-        mInterval = 1000;
-        while (readSection.getDataIndex(index).getNewDisplay()){ // until new DoesSplit
-            SpeedReadObject testObject = readSection.getDataIndex(index);
-            SpeedReadObject testObject2 = readSection.getDataIndex(index);
-            long testTime = testObject2.getTime();
-            mInterval += readSection.getDataIndex(index).getTime();
-            if (!readSection.getDataIndex(index).getTransparent()){
-                String stringToAdd =  readSection.getDataIndex(index).getData().toString();
-                displaystring = displaystring + stringToAdd;
-            }
-            index++;
-        }
-
-
-
-        return displaystring;
-    }
-
-    private void displayObject(SpeedReadObject toDisplay){
-        if (toDisplay.getClass() == SpeedReadSection.class){
+    private void displayObjectData(SpeedReadObject displayObject){
+        if (displayObject.getClass() == SpeedReadSection.class){
+            Log.e(LOG_TAG,"displayObject was a SpeedReadSection");
             throw new IllegalArgumentException();
         }
-        mainText.setText( toDisplay.getData().toString() );
+        if (displayObject.getData().getClass() == String.class ) {
+            displayStringObject(displayObject);
+            return;
+        }
+        Log.e(LOG_TAG,"SpeedReadObject not displayable");
+        throw new IllegalArgumentException();
     }
 
-    private SpeedReadObject addToDisplayObject(){
-
+    private void displayStringObject(SpeedReadObject displayObject){
+        mainText.setText( displayObject.getData().toString() );
+        intervalText.setText(String.valueOf( displayObject.getTime() * DELAY_TIME ));
     }
 
 
@@ -125,23 +102,60 @@ public class SpeedReadPage extends Activity {
         setContentView(R.layout.speed_read_page_portrait);
         mainText = findViewById(R.id.mainText);
         intervalText = findViewById(R.id.intervalValue);
-        Log.i("SpeedReadPage", "setupLayoutItemsCompleted");
+        Log.i(LOG_TAG, "setupLayoutItemsCompleted");
     }
 
-    private SpeedReadObject loadReadSectionFromIntent(){
+    private SpeedReadObject loadReadSectionFromBundle(Bundle toRead){
         // Load SpeedReadObejct
-        String GSON_INPUT = getIntent().getStringExtra("OBJECT_DATA");
-        String GSON_TYPE = getIntent().getStringExtra("OBJECT_TYPE");
+        String GSON_INPUT = toRead.getString("OBJECT_DATA");
+        String GSON_TYPE = toRead.getString("OBJECT_TYPE");
 
         SpeedReadObjectGSON gsonEngine = new SpeedReadObjectGSON();
         try {
             readSection = gsonEngine.toObject( GSON_INPUT,Class.forName(GSON_TYPE));
-            Log.i("SpeedReadPage","readSection created, type:" + readSection.getClass().getSimpleName());
+            Log.i(LOG_TAG,"readSection created, type:" + readSection.getClass().getSimpleName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            Log.w("SpeedReadPage","Intent GSON type error, class does not exist");
+            Log.w(LOG_TAG,"Intent GSON type error, class does not exist");
         }
 
         return readSection;
     }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        index = savedInstanceState.getInt("SpeedReadPageIndex");
+        readSection = loadReadSectionFromBundle(savedInstanceState);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // killed and restarted.
+        savedInstanceState.putInt("Index", index);
+        String PutReadSection = new SpeedReadObjectGSON().toGson( readSection );
+        savedInstanceState.putString("ReadSectionData",PutReadSection);
+        savedInstanceState.putString("ReadSectionType",readSection.getClassString());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(LOG_TAG,"onResume()");
+        // initialise first Handler
+        startRepeatingTask();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(LOG_TAG,"onPause()");
+        stopRepeatingTask();
+    }
+
 }

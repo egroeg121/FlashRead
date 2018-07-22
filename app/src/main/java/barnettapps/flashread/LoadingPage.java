@@ -31,16 +31,12 @@ public class LoadingPage extends Activity {
     {
         Intent intent = new Intent(this, SpeedReadPage.class);
 
-        String testString = "However,This. is a test Speed Read String, lets see how it handles it.";
-        SpeedReadString testSRString= new SpeedReadString( testString );
-        SpeedReadString testSRString2= new SpeedReadString( "Second Test" );
-
-        SpeedReadSection testSRSection = new SpeedReadSection( testSRString );
-        testSRSection.add(testSRString2);
-
+        //String testString = "This is a shorter sequence.";
+        String testString = "Hello! This is FlashRead, I'll help you read faster! I'm still in early development, but it should get a lot better over time. This section probably took just over 5 seconds to read. it would normally take you about 10 seconds.";
         SpeedReadGenerator speedReadGenerator = new SpeedReadGenerator();
-
-        SpeedReadObject toSend = speedReadGenerator.flatten( speedReadGenerator.generate( testString ) );
+        SpeedReadSection toFlatten = speedReadGenerator.generate( testString );
+        SpeedReadSection toCombine = speedReadGenerator.flatten( toFlatten );
+        SpeedReadSection toSend = speedReadGenerator.combine( toCombine );
 
         String testJSON = new SpeedReadObjectGSON().toGson(toSend);
         String typeJSON = toSend.getClassString();

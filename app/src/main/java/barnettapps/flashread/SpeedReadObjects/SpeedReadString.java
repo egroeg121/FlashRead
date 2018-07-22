@@ -2,6 +2,7 @@ package barnettapps.flashread.SpeedReadObjects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,24 @@ import barnettapps.flashread.SpeedReadObjects.Puncuation.SpeedReadStop;
 
 public class SpeedReadString extends SpeedReadObject<String>{
 
-    public SpeedReadString(String data) {
-        Data = data;
+    private static final String LOG_TAG = "SpeedReadString";
+
+    public SpeedReadString(String _data) {
+        Data = _data;
         CharLength = Data.length();
         Time = CharLength;
         Transparent = false;
         ObjectLength = 1;
         newDisplay = true;
+    }
+
+    public SpeedReadString(String _data,int _charlength,long _time, boolean _transparent, int _objectlength, boolean _newDisplay) {
+        Data = _data;
+        CharLength = _charlength;
+        Time = _time;
+        Transparent = _transparent;
+        ObjectLength = _objectlength;
+        newDisplay = _newDisplay;
     }
 
     public SpeedReadObject<? extends Object> split(SpeedReadPuncuation splitter) {
@@ -71,14 +83,22 @@ public class SpeedReadString extends SpeedReadObject<String>{
 
     @Override
     public SpeedReadObject merge(SpeedReadObject _toAdd) {
-        Data = this.Data + _toAdd.getData().toString();
-        reCalcFromData();
+        if (this.getData().getClass() != _toAdd.getData().getClass()){
+            Log.e(LOG_TAG,"Tried to merge, Data types are not the same");
+            throw new IllegalArgumentException();
+        }
+
+        if (! _toAdd.getTransparent() ){
+            this.Data = this.getData() + _toAdd.getData().toString();
+        }
+        this.Time = this.getTime() + _toAdd.getTime();
+        this.Transparent = this.getTransparent() && _toAdd.getTransparent();
+        this.newDisplay = this.getNewDisplay() || _toAdd.getNewDisplay();
+        this.CharLength = this.getCharLength() + _toAdd.getCharLength();
         return this;
     }
 
-    public SpeedReadObject merge(SpeedReadSection _toAdd) {
-        return _toAdd.add(this);
-    }
+
 
     public void reCalcFromData(){
         CharLength = Data.length();

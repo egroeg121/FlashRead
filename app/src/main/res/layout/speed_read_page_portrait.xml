@@ -11,7 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="This will Speed Read" />
+        android:text="This will Speed Read"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/intervalValue"

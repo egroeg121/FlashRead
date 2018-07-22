@@ -8,7 +8,7 @@ public abstract class SpeedReadObject<T>{
     protected boolean Transparent; // Whether the symbol gets shown on screen
     protected int ObjectLength; // For array lengths
     protected int CharLength; // For centreing
-    protected long Time; // How long to display on screen
+    protected double Time; // How long to display on screen
     protected boolean newDisplay; //
 
     public SpeedReadObject() {
@@ -25,6 +25,10 @@ public abstract class SpeedReadObject<T>{
 
     public SpeedReadObject getDataIndex(int _index) { return this;}
 
+    public int size(){
+        return 1;
+    }
+
     public int getObjectLength() {
         return ObjectLength;
     }
@@ -33,7 +37,7 @@ public abstract class SpeedReadObject<T>{
         return CharLength;
     }
 
-    public long getTime() {
+    public double getTime() {
         return Time;
     }
 

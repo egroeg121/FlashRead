@@ -40,6 +40,11 @@ public class SpeedReadSection extends SpeedReadObject<List<SpeedReadObject>>{
         return outList;
     }
 
+    @Override
+    public int size(){
+        return this.Data.size();
+    }
+
     void reCalc(){
         CharLength =calcCharLength();
         ObjectLength = calcObjectLength();

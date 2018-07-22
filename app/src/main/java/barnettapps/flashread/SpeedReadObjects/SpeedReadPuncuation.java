@@ -6,12 +6,12 @@ import android.os.Parcelable;
 public abstract class SpeedReadPuncuation extends SpeedReadString{
 
     public SpeedReadPuncuation(){
-        super(null);
-        Data = "p";
+        super("p");
         CharLength = 0;
         Time = 0;
         Transparent = false;
         ObjectLength = 1;
+        newDisplay = false;
     }
 
     @Override
