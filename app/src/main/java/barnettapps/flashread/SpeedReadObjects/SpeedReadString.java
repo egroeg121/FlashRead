@@ -17,7 +17,7 @@ public class SpeedReadString extends SpeedReadObject<String>{
     public SpeedReadString(String _data) {
         Data = _data;
         CharLength = Data.length();
-        Time = CharLength;
+        Time = 3+ CharLength/2;
         Transparent = false;
         ObjectLength = 1;
         newDisplay = true;
