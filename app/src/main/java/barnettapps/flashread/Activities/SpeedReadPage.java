@@ -1,35 +1,43 @@
-package barnettapps.flashread;
+package barnettapps.flashread.Activities;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import barnettapps.flashread.R;
+import barnettapps.flashread.Settings;
 import barnettapps.flashread.SpeedReadObjects.*;
 
 public class SpeedReadPage extends Activity {
     private static final String LOG_TAG = "SpeedReadPage";
     private static final double DELAY_TIME = 20;
+    private double multiplier;
 
     private Handler mHandler;
     private int index; // index of latest item to be displayed, global variable
 
     private TextView mainText;
     private TextView intervalText;
+    private SeekBar speedBar;
     long startTime;
 
     private SpeedReadObject readSection;
     private SpeedReadObject displayObject;
+
+    Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("SpeedReadPage", "onCreate called");
 
+        settings = new Settings();
 
         setupLayoutItems();
 
@@ -98,12 +106,37 @@ public class SpeedReadPage extends Activity {
     }
 
 
+
     private void setupLayoutItems(){
         setContentView(R.layout.speed_read_page_portrait);
         mainText = findViewById(R.id.mainText);
         intervalText = findViewById(R.id.intervalValue);
+        speedBar = findViewById(R.id.speedBar);
+        speedBar.setOnSeekBarChangeListener(seekbarListener);
+        speedBar.setMax( settings.getMaxSpeed() );
+        //speedBar.setMin( settings.getMinSpeed() );
+
         Log.i(LOG_TAG, "setupLayoutItemsCompleted");
     }
+
+    private SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress,
+                                      boolean fromUser) {
+            Log.i(LOG_TAG, "Progress changed to " + String.valueOf(progress));
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
 
     private SpeedReadObject loadReadSectionFromBundle(Bundle toRead){
         // Load SpeedReadObejct

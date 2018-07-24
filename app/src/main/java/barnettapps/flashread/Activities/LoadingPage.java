@@ -1,4 +1,4 @@
-package barnettapps.flashread;
+package barnettapps.flashread.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,28 +6,27 @@ import android.app.Activity;
 import android.widget.Button;
 import android.view.View;
 
-import com.google.gson.Gson;
-
-import barnettapps.flashread.SpeedReadObjects.SpeedReadObject;
+import barnettapps.flashread.Activities.SpeedReadPage;
+import barnettapps.flashread.R;
+import barnettapps.flashread.SpeedReadGenerator;
 import barnettapps.flashread.SpeedReadObjects.SpeedReadObjectGSON;
 import barnettapps.flashread.SpeedReadObjects.SpeedReadSection;
-import barnettapps.flashread.SpeedReadObjects.SpeedReadString;
 
 public class LoadingPage extends Activity {
 
-    private Button startButton;
+    private Button speedReadButton;
+    private Button loadImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_page);
 
-        startButton = (Button) findViewById(R.id.startButton);
-
-        startButton.performClick();
+        speedReadButton = findViewById(R.id.speedReadButton);
+        loadImageButton = findViewById(R.id.loadImageButton);
     }
 
-    public void startButtonClicked(View v)
+    public void speedReadClicked(View v)
     {
         Intent intent = new Intent(this, SpeedReadPage.class);
 
@@ -42,6 +41,13 @@ public class LoadingPage extends Activity {
         String typeJSON = toSend.getClassString();
         intent.putExtra("OBJECT_DATA", testJSON);
         intent.putExtra("OBJECT_TYPE", typeJSON);
+        startActivity(intent);
+
+    }
+
+    public void loadImageClicked(View v)
+    {
+        Intent intent = new Intent(this, SpeedReadPage.class);
         startActivity(intent);
 
     }
