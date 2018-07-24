@@ -24,6 +24,8 @@ import barnettapps.flashread.SpeedReadObjects.SpeedReadSection;
 public class TestOCRActivity extends Activity {
 
     Bitmap testImage;
+    private static final int RESULT_LOAD_IMG = 10001;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +52,11 @@ public class TestOCRActivity extends Activity {
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
 
-
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && reqCode == RESULT_LOAD_IMG) {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap testImage = BitmapFactory.decodeStream(imageStream);
-                testImage.setImageBitmap(selectedImage);
+                testImage = BitmapFactory.decodeStream(imageStream);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
