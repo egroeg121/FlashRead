@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.LoadingPage"
+            android:name=".Activities.MediaPage"
             android:label="@string/title_activity_loading_page">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +24,15 @@
         <activity
             android:name=".Activities.TestOCRActivity"
             android:label="testocractivity" />
+        <activity
+            android:name=".Activities.ImagePage"
+            android:label="testocractivity" />
+
+        <activity
+            android:name=".Activities.LoadingPage"
+            android:label="testocractivity" />
+
+
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

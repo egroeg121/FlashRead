@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import barnettapps.flashread.FireBaseMLKit;
 import barnettapps.flashread.Activities.SpeedReadPage;
 import barnettapps.flashread.R;
 import barnettapps.flashread.SpeedReadGenerator;
@@ -34,8 +36,6 @@ public class TestOCRActivity extends Activity {
 
         pickImage();
 
-        analyseImage();
-
     }
 
     private void pickImage(){
@@ -44,9 +44,7 @@ public class TestOCRActivity extends Activity {
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
     }
 
-    private void analyseImage(){
-        FirebaseVisionImage image = FirebaseVisionImage.fromMediaImage();
-    }
+
 
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
@@ -65,6 +63,10 @@ public class TestOCRActivity extends Activity {
         }else {
             Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
+
+        FireBaseMLKit firebaseMLKit = new FireBaseMLKit(this);
+
+        String outString = firebaseMLKit.analyseImage(testImage);
     }
 
 }

@@ -5,6 +5,15 @@ public class Settings {
     private int maxSpeed;
     private int minSpeed;
 
+    // Codes
+    private static final int RESULT_LOAD_IMG = 14353;
+    private static final int RESULT_GET_PHOTOPICKER = 12722;
+
+
+
+    // Bundle Keys
+    private static final String IMAGE_URI="IMAGE_URI";
+
     public Settings() {
         this.maxSpeed = 2000;
         this.minSpeed = 50;
@@ -26,8 +35,9 @@ public class Settings {
         this.minSpeed = minSpeed;
     }
 
+    public int getRESULT_LOAD_IMG(){return RESULT_LOAD_IMG;}
+    public int getRESULT_GET_PHOTOPICKER(){return RESULT_GET_PHOTOPICKER;}
 
-
-
+    public String getIMAGE_URI(){return IMAGE_URI;}
 
 }

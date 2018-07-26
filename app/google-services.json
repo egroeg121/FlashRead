@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "809950103160",
+    "firebase_url": "https://flashread-9298b.firebaseio.com",
+    "project_id": "flashread-9298b",
+    "storage_bucket": "flashread-9298b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809950103160:android:3bd46bc6064445a9",
+        "android_client_info": {
+          "package_name": "barnettapps.flashread"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809950103160-djbn0gl4bf3dd5sjmkr5kgn6hnrtk5do.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "barnettapps.flashread",
+            "certificate_hash": "29915e4b0ac90dec15f366b332c688c0b1f52636"
+          }
+        },
+        {
+          "client_id": "809950103160-5rjbq0b5ghebsnol8g1lj28c7ta1e3ha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "barnettapps.flashread",
+            "certificate_hash": "2c3d109665c12640f449ffd952ef3c0d94d0d657"
+          }
+        },
+        {
+          "client_id": "809950103160-foh690loem6n38pkj3p0d9ggsalebq4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdCg9FDuy76QYRCQ4-dHqG9ZYVZesAJBw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809950103160-foh690loem6n38pkj3p0d9ggsalebq4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
