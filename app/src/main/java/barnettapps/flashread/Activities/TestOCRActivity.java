@@ -66,7 +66,7 @@ public class TestOCRActivity extends Activity {
 
         FireBaseMLKit firebaseMLKit = new FireBaseMLKit(this);
 
-        String outString = firebaseMLKit.analyseImage(testImage);
+        //String outString = firebaseMLKit.analyseImage(testImage);
     }
 
 }

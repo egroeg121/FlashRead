@@ -1,107 +1,84 @@
 package barnettapps.flashread;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.util.SparseIntArray;
-import android.view.Surface;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
 
-import kotlin.jvm.Throws;
-
-import static android.content.Context.CAMERA_SERVICE;
+import java.util.List;
 
 public class FireBaseMLKit {
 
     private static final String LOG_TAG = "FireBaseMLKit";
     private Context context;
 
-    String outText;
+    private String outText;
+    FirebaseVisionTextDetector textDetector;
+    private FirebaseVisionText outFireBaseVisionText;
+
 
     public FireBaseMLKit(Context contex) {
         this.context = contex;
+
+        //FirebaseApp.initializeApp(context);
+        textDetector = FirebaseVision.getInstance().getVisionTextDetector();
     }
 
-    public String analyseImage(Bitmap bitmap){
-
-        FirebaseApp.initializeApp(context);
-        FirebaseVision testFire = FirebaseVision.getInstance();
-        FirebaseVisionTextDetector detector = testFire.getVisionTextDetector();
-
-
-        FirebaseVisionImage fireImage = FirebaseVisionImage.fromBitmap(bitmap);
-        Task<FirebaseVisionText> result =
-                detector.detectInImage(fireImage
-                )
-                        .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+    public FirebaseVisionText analyseImage(Bitmap bitmap){
+        FirebaseVisionTextDetector detector = FirebaseVision.getInstance()
+                .getVisionTextDetector();
+        detector.detectInImage( loadBitmap(bitmap) )
+                .addOnSuccessListener(
+                        new OnSuccessListener<FirebaseVisionText>() {
                             @Override
-                            public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                                detectSuccess( firebaseVisionText);
-
-
-
+                            public void onSuccess(FirebaseVisionText texts) {
+                                outFireBaseVisionText = texts;
                             }
                         })
-                        .addOnFailureListener(
-                                new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        // Task failed with an exception
-                                        // ...
-                                    }
-                                });
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                e.printStackTrace();
+                            }
+                        });
 
-
-
-
-    return outText;
+        return outFireBaseVisionText;
     }
 
-    void detectFaliure(){
-
-
+    private FirebaseVisionImage loadBitmap(Bitmap toLoad){
+        FirebaseVisionImage loaded = FirebaseVisionImage.fromBitmap(toLoad);
+        Log.i(LOG_TAG,"Loaded Bitmap");
+        return loaded;
     }
 
-    void detectSuccess( FirebaseVisionText firebaseVisionText ){
+    private void detectSuccess(FirebaseVisionText firebaseVisionText){
+        outFireBaseVisionText = firebaseVisionText;
+        Log.i(LOG_TAG,"Successfully Detected Text");
+    }
 
-        for (FirebaseVisionText.Block block: firebaseVisionText.getBlocks()) {
-            Rect boundingBox = block.getBoundingBox();
-            Point[] cornerPoints = block.getCornerPoints();
-            String text = block.getText();
-            outText = text;
+    private void detectFaliure(Exception e){
+        Log.e(LOG_TAG,"Failed to Detect Text");
+        Toast.makeText(context, "Failure to detect text. Please try again or choose another image.", Toast.LENGTH_LONG).show();
+    }
 
-            for (FirebaseVisionText.Line line: block.getLines()) {
-                // ...
 
-                String lineTet = line.getText();
 
-                for (FirebaseVisionText.Element element: line.getElements()) {
-                    // ...
-
-                    String elementText = element.getText();
-
-                }
-            }
+    public List<FirebaseVisionText.Block> getBlocks(FirebaseVisionText fireText){
+        List<FirebaseVisionText.Block> blocks = fireText.getBlocks();
+        if (blocks.size() == 0) {
+            Toast.makeText(context, "No text Found", Toast.LENGTH_LONG).show();
         }
-
+        return blocks;
     }
-
 }
