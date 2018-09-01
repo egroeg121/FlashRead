@@ -47,7 +47,7 @@ public class LoadingPage extends Activity {
 
     public void loadImageClicked(View v)
     {
-        Intent intent = new Intent(this, TestOCRActivity.class);
+        Intent intent = new Intent(this, ImagePage.class);
         startActivity(intent);
 
     }

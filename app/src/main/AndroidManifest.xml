@@ -22,9 +22,6 @@
             android:name=".Activities.SpeedReadPage"
             android:label="@string/title_activity_speed_read_page" />
         <activity
-            android:name=".Activities.TestOCRActivity"
-            android:label="testocractivity" />
-        <activity
             android:name=".Activities.ImagePage"
             android:label="testocractivity" />
 

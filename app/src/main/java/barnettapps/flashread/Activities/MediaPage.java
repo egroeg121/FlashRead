@@ -12,16 +12,10 @@ import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URI;
 
 import barnettapps.flashread.Settings;
 
-import barnettapps.flashread.Activities.SpeedReadPage;
-import barnettapps.flashread.FireBaseMLKit;
 import barnettapps.flashread.R;
-import barnettapps.flashread.SpeedReadGenerator;
-import barnettapps.flashread.SpeedReadObjects.SpeedReadObjectGSON;
-import barnettapps.flashread.SpeedReadObjects.SpeedReadSection;
 
 public class MediaPage extends Activity {
 
