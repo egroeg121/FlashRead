@@ -2,26 +2,58 @@ package barnettapps.flashread;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 
 public class detectedTextBlock {
 
     boolean clicked;
-    FirebaseVisionText.TextBlock textblock;
-    Paint color;
+    String text;
+    Point[] cornerPoints;
+    Rect boundingBox;
+
+
 
     public detectedTextBlock(FirebaseVisionText.TextBlock inputblock){
-        this.textblock = inputblock;
+        this.text = inputblock.getText();
         this.clicked = false;
-        this.color = getPaintNotClicked();
+        this.cornerPoints = inputblock.getCornerPoints();
+        this.boundingBox = inputblock.getBoundingBox();
     }
 
+
+
+    public void setClicked( Boolean cliceked){
+        this.clicked = cliceked;
+    }
+
+    public Boolean toggleClicked(){
+        if (clicked){
+            clicked = false;
+        } else {
+            clicked = true;
+        }
+        return clicked;
+    }
+
+    public boolean isClicked() {
+        return clicked;
+    }
+    public String getText() {
+        return text;
+    }
+    public Point[] getCornerPoints() {
+        return cornerPoints;
+    }
+    public Rect getBoundingBox() {
+        return boundingBox;
+    }
     public Paint getColor(){
         if (clicked){ return getPaintClicked(); }
         else{ return getPaintNotClicked(); }
     }
-
     public Paint getPaintNotClicked(){
         Paint rectPaint = new Paint();
         rectPaint.setColor(Color.RED);
@@ -36,18 +68,5 @@ public class detectedTextBlock {
         rectPaint.setStrokeWidth(4.0f);
         return rectPaint;
     }
-
-    public void setColor( Paint color){
-        this.color = color;
-    }
-
-    public Paint toggleClicked(){
-        if (clicked){
-            clicked = false;
-        } else {
-            clicked = true;
-        }
-        return color;
-    }
-
 }
+

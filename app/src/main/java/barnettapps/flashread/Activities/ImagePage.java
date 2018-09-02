@@ -17,15 +17,19 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import barnettapps.flashread.Settings;
 import barnettapps.flashread.R;
+import barnettapps.flashread.detectedText;
+import barnettapps.flashread.detectedTextPage;
 
 public class ImagePage extends Activity {
     private static final String LOG_TAG = "ImagePage";
@@ -33,6 +37,8 @@ public class ImagePage extends Activity {
     private Settings settings;
     private Bitmap mainImage;
     private ImageView imageView;
+
+    private detectedTextPage detectedInPage;
 
 
     @Override
@@ -58,43 +64,14 @@ public class ImagePage extends Activity {
 
     private void runTextRecognition ( Bitmap mainImage){
         FirebaseVisionImage input = loadBitmap( mainImage );
-
+        FirebaseVisionTextRecognizer textRecognizer;
         if (settings.getCloudProcessing()){
-            //runCloudRecognition(input);
+            textRecognizer = FirebaseVision.getInstance().getCloudTextRecognizer();
         }else{
-            runOnDeviceRecognition(input);
+            textRecognizer = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
         }
-    }
 
-    /*
-    private void runCloudRecognition(FirebaseVisionImage firebaseVisionImage){
-        FirebaseVisionCloudDetectorOptions options =
-                new FirebaseVisionCloudDetectorOptions.Builder()
-                        .setModelType(FirebaseVisionCloudDetectorOptions.LATEST_MODEL)
-                        .setMaxResults(15)
-                        .build();
-        FirebaseVisionCloudTextDetector detector = FirebaseVision.getInstance().getVisionCloudTextDetector();
-
-        Task<FirebaseVisionCloudText> result = detector.detectInImage(firebaseVisionImage)
-                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionCloudText>() {
-                    @Override
-                    public void onSuccess(FirebaseVisionCloudText firebaseVisionCloudText) {
-                        //detectSuccess(firebaseVisionCloudText);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //detectFailure(e);
-                    }
-                });
-    }
-    */
-
-    private void runOnDeviceRecognition(FirebaseVisionImage firebaseVisionImage){
-        FirebaseVisionTextRecognizer textRecognizer = FirebaseVision.getInstance()
-                .getOnDeviceTextRecognizer();
-        textRecognizer .processImage(firebaseVisionImage)
+        textRecognizer .processImage(input)
                 .addOnSuccessListener(
                         new OnSuccessListener<FirebaseVisionText>() {
                             @Override
@@ -114,9 +91,12 @@ public class ImagePage extends Activity {
                         });
 
     }
+
+
+
     private void detectSuccess(FirebaseVisionText texts){
-        List blockList = processTextRecognitionResult(texts);
-        drawBoxes(blockList);
+        detectedInPage = processTextRecognitionResult(texts);
+        drawBoxes();
 
     }
 
@@ -125,14 +105,15 @@ public class ImagePage extends Activity {
         e.printStackTrace();
     }
 
-    private List<FirebaseVisionText.TextBlock> processTextRecognitionResult(FirebaseVisionText texts){
+    private detectedTextPage processTextRecognitionResult(FirebaseVisionText texts){
         Log.i(LOG_TAG,"Processing Results");
 
         if (texts.getTextBlocks().size() == 0) {
             Toast.makeText(this, "No text found.", Toast.LENGTH_LONG).show();
+            // TODO Add Proper Escape
         }
 
-        return texts.getTextBlocks();
+        return new detectedTextPage(texts);
 
     }
 
@@ -165,14 +146,15 @@ public class ImagePage extends Activity {
     }
 
 
-    private void drawBoxes(List<FirebaseVisionText.TextBlock> blockList ){
+    private void drawBoxes(){
         Log.i(LOG_TAG,"Drawing Boxes");
         Bitmap tempBitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.RGB_565);
         Canvas tempCanvas = new Canvas(tempBitmap);
         tempCanvas.drawBitmap(mainImage, 0, 0, null);
 
-        for (int i = 0; i < blockList.size(); i++) {
-            Rect rect =  blockList.get(i).getBoundingBox();
+
+        for (int i = 0; i < detectedInPage.size(); i++) {
+            Rect rect =  detectedInPage.get(i).getBoundingBox();
             Point[] cornerPoints = blockList.get(i).getCornerPoints();
             float[] blockFloats = pointToFloat(cornerPoints);
             //tempCanvas.drawPoints( blockFloats , getPaintNotClicked() );
